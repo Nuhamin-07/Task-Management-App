@@ -1,6 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 export default function TaskList() {
   const [tasks, setTasks] = useState([]);
@@ -22,11 +22,11 @@ export default function TaskList() {
           <div>
             <h3 className="font-semibold">{task.name}</h3>
             <p>{task.description}</p>
-            <p>
-              <strong className="text-sm text-muted-foreground">
-                {task.status}
-              </strong>
-            </p>
+            <p className="text-sm text-muted-foreground">{task.status}</p>
+            <div className="button-container">
+              <Button variant="outline">Edit</Button>
+              <Button variant="destructive">Delete</Button>
+            </div>
           </div>
           <div className="flex items-center gap-2">
             <Badge
