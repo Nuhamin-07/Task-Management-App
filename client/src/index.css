@@ -136,7 +136,8 @@ h1,
 h2 {
   font-family: var(--heading);
   font-weight: 500;
-  color: var(--text-h);
+  color: #fff;
+  /* color: var(--text-h); */
 }
 
 h1 {
@@ -269,4 +270,28 @@ code {
   max-width: 100%;
   background-color: #46a0d4;
   padding: 30px 0;
+}
+
+.list-card {
+  margin: 20px auto;
+  padding: 20px;
+}
+
+.task-container {
+  text-align: left;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 40px;
+}
+
+.task-container:hover {
+  background-color: #eee;
+}
+
+.container {
+  max-width: 70%;
+  margin: 0 auto;
+  padding: 20px 40px;
 }
