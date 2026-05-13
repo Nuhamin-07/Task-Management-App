@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import TaskList from "./pages/TaskList";
 import MainLayout from "./components/MainLayout";
+import CreateTask from "./pages/CreateTask";
 
 const router = createBrowserRouter([
   {
@@ -16,7 +17,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/task-form",
-        element: <h1>New Task Page</h1>,
+        element: <CreateTask />,
       },
     ],
   },
