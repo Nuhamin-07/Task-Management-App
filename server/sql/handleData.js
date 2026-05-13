@@ -7,17 +7,21 @@ const db = await open({
   driver: sqlite3.Database,
 });
 
+// export async function dropTable() {
+//   await db.exec(`DROP TABLE IF EXISTS tasks`);
+// }
+
 export async function createDatabaseTable() {
-  //   await db.exec(`CREATE TABLE IF NOT EXISTS tasks(
+  // await db.exec(`CREATE TABLE IF NOT EXISTS tasks(
   //     id INTEGER PRIMARY KEY AUTOINCREMENT,
   //     name TEXT NOT NULL,
   //     description TEXT,
   //     priority TEXT CHECK (
-  //         priority IN ('low', 'medium', 'high')
+  //         priority IN ('Low', 'Medium', 'High')
   //     ) NOT NULL,
   //     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   //     status TEXT CHECK (
-  //         status IN ('todo', 'inprogress', 'completed')
+  //         status IN ('Todo', 'Inprogress', 'Completed')
   //     ) NOT NULL DEFAULT 'todo',
   //     completed_at DATETIME
   //     )`);
