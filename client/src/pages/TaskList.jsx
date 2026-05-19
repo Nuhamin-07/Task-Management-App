@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 export default function TaskList() {
   const [tasks, setTasks] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchTasks() {
@@ -14,9 +16,23 @@ export default function TaskList() {
     fetchTasks();
   }, []);
 
-  console.log(tasks);
+  async function handleDelete(taskId) {
+    await fetch(`http://localhost:3000/api/tasks/${taskId}`, {
+      method: "DELETE",
+    });
+    setTasks(tasks.filter((task) => task.id !== taskId));
+  }
+
   return (
-    <div className="space-y-4 container">
+    <div className="space-y-4 container list-container">
+      <Button
+        onClick={() => navigate("/task-form")}
+        className="create-task-button"
+      >
+        Create New Task
+      </Button>
+      <h2>My Tasks</h2>
+
       {tasks?.map((task) => (
         <div key={task.id} className="border rounded-lg p-4 task-container">
           <div>
@@ -25,7 +41,12 @@ export default function TaskList() {
             <p className="text-sm text-muted-foreground">{task.status}</p>
             <div className="button-container">
               <Button variant="outline">Edit</Button>
-              <Button variant="destructive">Delete</Button>
+              <Button
+                variant="destructive"
+                onClick={() => handleDelete(task.id)}
+              >
+                Delete
+              </Button>
             </div>
           </div>
           <div className="flex items-center gap-2">
