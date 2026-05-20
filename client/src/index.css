@@ -364,6 +364,20 @@ button[role="combobox"] {
 Button {
   cursor: pointer;
 }
+
+.list-header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.list-header-container > Input {
+  width: 300px;
+}
+
+.list-container > h2 {
+  margin-bottom: 20px;
+}
 @media (max-width: 768px) {
   .task-container {
     flex-direction: column;
