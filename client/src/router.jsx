@@ -16,7 +16,15 @@ const router = createBrowserRouter([
         element: <TaskList />,
       },
       {
-        path: "/task-form",
+        path: "/task/new",
+        element: <CreateTask />,
+      },
+      {
+        path: "/task/:id",
+        element: <CreateTask />,
+      },
+      {
+        path: "/task/:id/edit",
         element: <CreateTask />,
       },
     ],

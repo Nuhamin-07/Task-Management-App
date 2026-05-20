@@ -26,7 +26,7 @@ export default function TaskList() {
   return (
     <div className="space-y-4 container list-container">
       <Button
-        onClick={() => navigate("/task-form")}
+        onClick={() => navigate("/task/new")}
         className="create-task-button"
       >
         Create New Task
@@ -40,7 +40,13 @@ export default function TaskList() {
             <p>{task.description}</p>
             <p className="text-sm text-muted-foreground">{task.status}</p>
             <div className="button-container">
-              <Button variant="outline">Edit</Button>
+              <Button onClick={() => navigate(`/task/${task.id}`)}>View</Button>
+              <Button
+                variant="outline"
+                onClick={() => navigate(`/task/${task.id}/edit`)}
+              >
+                Edit
+              </Button>
               <Button
                 variant="destructive"
                 onClick={() => handleDelete(task.id)}
