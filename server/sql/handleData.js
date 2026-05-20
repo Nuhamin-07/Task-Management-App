@@ -44,7 +44,7 @@ export async function insertTask(
 }
 
 export async function getAllTasks() {
-  const tasks = await db.all(`SELECT * FROM tasks`);
+  const tasks = await db.all(`SELECT * FROM tasks ORDER BY created_at DESC`);
   return tasks;
 }
 
