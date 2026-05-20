@@ -2,9 +2,22 @@ import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { Input } from "@/components/ui/input";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function TaskList() {
   const [tasks, setTasks] = useState([]);
+  const [searchTask, setSearchTask] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,17 +36,30 @@ export default function TaskList() {
     setTasks(tasks.filter((task) => task.id !== taskId));
   }
 
+  const filteredTasks = searchTask
+    ? tasks.filter((task) =>
+        task.name.toLowerCase().includes(searchTask.toLowerCase()),
+      )
+    : tasks;
+
   return (
     <div className="space-y-4 container list-container">
-      <Button
-        onClick={() => navigate("/task/new")}
-        className="create-task-button"
-      >
-        Create New Task
-      </Button>
       <h2>My Tasks</h2>
+      <div className="flex items-center gap-10 list-header-container">
+        <Input
+          placeholder="Search tasks..."
+          value={searchTask}
+          onChange={(e) => setSearchTask(e.target.value)}
+        />
+        <Button
+          onClick={() => navigate("/task/new")}
+          className="create-task-button"
+        >
+          Create New Task
+        </Button>
+      </div>
 
-      {tasks?.map((task) => (
+      {filteredTasks?.map((task) => (
         <div key={task.id} className="border rounded-lg p-4 task-container">
           <div>
             <h3 className="font-semibold">{task.name}</h3>
@@ -47,12 +73,27 @@ export default function TaskList() {
               >
                 Edit
               </Button>
-              <Button
-                variant="destructive"
-                onClick={() => handleDelete(task.id)}
-              >
-                Delete
-              </Button>
+
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="destructive">Delete</Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      your task from the list.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={() => handleDelete(task.id)}>
+                      Continue
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </div>
           <div className="flex items-center gap-2">
