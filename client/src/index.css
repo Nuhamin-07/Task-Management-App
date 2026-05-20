@@ -326,13 +326,11 @@ code {
   margin-top: 30px;
   padding: 20px;
   width: 100%;
-  cursor: pointer;
 }
 
 .list-container > Button {
   display: flex;
   justify-self: flex-end;
-  cursor: pointer;
 }
 
 label {
@@ -361,9 +359,11 @@ button[role="combobox"] {
   height: 50px;
   border-radius: 50%;
   /* justify-content: flex-start; */
-  cursor: pointer;
 }
 
+Button {
+  cursor: pointer;
+}
 @media (max-width: 768px) {
   .task-container {
     flex-direction: column;

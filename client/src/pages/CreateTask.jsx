@@ -10,9 +10,10 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 
 export default function CreateTask() {
   const [task, setTask] = useState({
@@ -23,6 +24,32 @@ export default function CreateTask() {
     completed_at: "",
   });
   const navigate = useNavigate();
+  const { id } = useParams();
+  const location = useLocation();
+
+  const isEditMode = location.pathname.includes("/edit");
+  const isViewMode = id && !isEditMode;
+
+  useEffect(() => {
+    async function fetchTask() {
+      if (!id) return;
+      try {
+        const response = await fetch(`http://localhost:3000/api/tasks/${id}`);
+        const taskData = await response.json();
+        setTask({
+          name: taskData.name || "",
+          description: taskData.description || "",
+          priority: taskData.priority || "",
+          status: taskData.status || "",
+          completed_at: taskData.completed_at || "",
+        });
+      } catch (error) {
+        console.error("Error fetching task:", error);
+      }
+    }
+
+    fetchTask();
+  }, [id]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -35,13 +62,26 @@ export default function CreateTask() {
       completed_at: task.completed_at,
     };
 
-    await fetch("http://localhost:3000/api/tasks", {
-      method: "POST",
+    const url = id
+      ? `http://localhost:3000/api/tasks/${id}`
+      : "http://localhost:3000/api/tasks";
+    const method = id ? "PUT" : "POST";
+
+    await fetch(url, {
+      method: method,
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(taskData),
     });
+    setTask({
+      name: "",
+      description: "",
+      priority: "",
+      status: "",
+      completed_at: "",
+    });
+    navigate("/tasks");
   }
 
   return (
@@ -49,7 +89,13 @@ export default function CreateTask() {
       <Button className="back-button" onClick={() => navigate("/tasks")}>
         <ArrowLeft />
       </Button>
-      <h2>Create New Task</h2>
+      <h2>
+        {isViewMode
+          ? "Task Details"
+          : isEditMode
+            ? "Edit Task"
+            : "Create New Task"}
+      </h2>
       <form className="task-form" onSubmit={handleSubmit}>
         <label htmlFor="task-name">Task Name</label>
         <Input
@@ -60,6 +106,7 @@ export default function CreateTask() {
           required
           value={task.name}
           onChange={(e) => setTask({ ...task, name: e.target.value })}
+          disabled={isViewMode}
         />
         <label htmlFor="task-desc">Description</label>
         <Textarea
@@ -68,6 +115,7 @@ export default function CreateTask() {
           placeholder="Task Description"
           value={task.description}
           onChange={(e) => setTask({ ...task, description: e.target.value })}
+          disabled={isViewMode}
         />
         <div className="select-input-container">
           <div>
@@ -78,6 +126,7 @@ export default function CreateTask() {
               required
               value={task.priority}
               onValueChange={(value) => setTask({ ...task, priority: value })}
+              disabled={isViewMode}
             >
               <SelectTrigger className="w-full max-w-48">
                 <SelectValue placeholder="Select priority" />
@@ -100,6 +149,7 @@ export default function CreateTask() {
               required
               value={task.status}
               onValueChange={(value) => setTask({ ...task, status: value })}
+              disabled={isViewMode}
             >
               <SelectTrigger className="w-full max-w-48">
                 <SelectValue placeholder="Select status" />
@@ -122,8 +172,11 @@ export default function CreateTask() {
           name="task-completed-at"
           value={task.completed_at}
           onChange={(e) => setTask({ ...task, completed_at: e.target.value })}
+          disabled={isViewMode}
         />
-        <Button type="submit">Create Task</Button>
+        {!isViewMode && (
+          <Button type="submit">{id ? "Update Task" : "Create Task"}</Button>
+        )}
       </form>
     </div>
   );
