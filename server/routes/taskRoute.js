@@ -6,11 +6,12 @@ import {
   updateIndividualTask,
   deleteIndividualTask,
 } from "../controllers/taskController.js";
+import { requireAuth } from "../controllers/authController.js";
 
 export const taskRouter = Router();
 
-taskRouter.post("/tasks", postTask);
-taskRouter.get("/tasks", getTasks);
-taskRouter.get("/tasks/:id", getIndividualTask);
-taskRouter.put("/tasks/:id", updateIndividualTask);
-taskRouter.delete("/tasks/:id", deleteIndividualTask);
+taskRouter.post("/tasks", requireAuth, postTask);
+taskRouter.get("/tasks", requireAuth, getTasks);
+taskRouter.get("/tasks/:id", requireAuth, getIndividualTask);
+taskRouter.put("/tasks/:id", requireAuth, updateIndividualTask);
+taskRouter.delete("/tasks/:id", requireAuth, deleteIndividualTask);
