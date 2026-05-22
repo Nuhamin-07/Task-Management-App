@@ -66,6 +66,7 @@ export async function insertTask(
 
 export async function getAllTasks() {
   const tasks = await db.all(`SELECT * FROM tasks ORDER BY created_at DESC`);
+  console.log(tasks);
   return tasks;
 }
 
@@ -93,10 +94,11 @@ export async function deleteTask(id) {
 }
 
 export async function insertUser(first_name, last_name, email, password) {
-  await db.run(
+  const newUser = await db.run(
     `INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)`,
     [first_name, last_name, email, password],
   );
+  return newUser;
 }
 
 export async function getUserByEmail(email) {

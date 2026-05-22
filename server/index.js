@@ -3,6 +3,7 @@ import cors from "cors";
 import session from "express-session";
 
 import { taskRouter } from "./routes/taskRoute.js";
+import { authRouter } from "./routes/authRoute.js";
 
 const app = express();
 app.use(cors());
