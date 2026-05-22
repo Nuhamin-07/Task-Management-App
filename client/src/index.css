@@ -124,7 +124,7 @@ body {
 #root {
   max-width: 100%;
   margin: 0 auto;
-  text-align: center;
+  /* text-align: center; */
   border-inline: 1px solid var(--border);
   min-height: 100svh;
   display: flex;
@@ -273,6 +273,7 @@ code {
 
 #navbar > h1 {
   color: #fff;
+  text-align: center;
 }
 
 .list-card {
@@ -377,6 +378,14 @@ Button {
 
 .list-container > h2 {
   margin-bottom: 20px;
+}
+
+.signup-form > label {
+  margin-top: auto;
+}
+
+.signup-form > Button {
+  width: 100%;
 }
 @media (max-width: 768px) {
   .task-container {
