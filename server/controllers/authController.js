@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { isEmail } from "validator";
+import validator from "validator";
 
 import {
   insertUser,
@@ -15,13 +15,13 @@ export async function registerUser(req, res) {
       return res.status(400).json({ error: "All fields are required" });
     }
 
-    if (!isEmail(email)) {
+    if (!validator.isEmail(email)) {
       return res.status(400).json({ error: "Invalid email format" });
     }
 
-    if (password.length < 8) {
+    if (password.length < 6) {
       return res.status(400).json({
-        error: "Password must be at least 8 characters",
+        error: "Password must be at least 6 characters",
       });
     }
 
@@ -42,7 +42,7 @@ export async function registerUser(req, res) {
       hashedPassword,
     );
 
-    req.session.userId = newUser.id;
+    req.session.userId = newUser.lastID;
 
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
