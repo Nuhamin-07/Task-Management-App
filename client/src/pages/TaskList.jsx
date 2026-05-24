@@ -14,14 +14,17 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { useAuth } from "../context/AuthContext";
 
 export default function TaskList() {
   const [tasks, setTasks] = useState([]);
   const [searchTask, setSearchTask] = useState("");
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   useEffect(() => {
     async function fetchTasks() {
+      if (!user) return;
       const response = await fetch("http://localhost:3000/api/tasks", {
         credentials: "include",
       });

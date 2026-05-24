@@ -98,7 +98,6 @@ export default function CreateTask() {
       console.log("Error creating/updating task: ", err);
     }
   }
-
   return (
     <div className="form-container">
       <Button className="back-button" onClick={() => navigate("/tasks")}>

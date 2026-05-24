@@ -1,7 +1,8 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Signup() {
   const [newUser, setNewUser] = useState({
@@ -10,6 +11,9 @@ export default function Signup() {
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
+
+  const { setUser } = useAuth();
 
   async function handleRegister(e) {
     try {
@@ -17,10 +21,13 @@ export default function Signup() {
       const response = await fetch("http://localhost:3000/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify(newUser),
       });
       const data = await response.json();
       console.log("User registered: ", data);
+      setUser(data.user);
+      navigate("/tasks");
     } catch (err) {
       console.log("Error registering a new user: ", err);
     }
