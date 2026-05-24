@@ -57,26 +57,26 @@ export async function insertTask(
   priority,
   status,
   completed_at,
+  user_id,
 ) {
   await db.run(
-    `INSERT INTO tasks (name, description, priority, status, completed_at) VALUES (?, ?, ?, ?, ?)`,
-    [name, description, priority, status, completed_at],
+    `INSERT INTO tasks (name, description, priority, status, completed_at, user_id) VALUES (?, ?, ?, ?, ?, ?)`,
+    [name, description, priority, status, completed_at, user_id],
   );
 }
 
-export async function getAllTasks() {
+export async function getAllTasks(user_id) {
   const tasks = await db.all(
     `SELECT * FROM tasks WHERE user_id = ? ORDER BY created_at DESC`,
-    [req.session.userId],
+    [user_id],
   );
-  console.log(tasks);
   return tasks;
 }
 
-export async function getTaskById(id) {
+export async function getTaskById(id, user_id) {
   const task = await db.get(
     `SELECT * FROM tasks WHERE user_id = ? AND id = ?`,
-    [req.session.userId, id],
+    [user_id, id],
   );
   return task;
 }
@@ -88,18 +88,16 @@ export async function updateTask(
   priority,
   status,
   completed_at,
+  user_id,
 ) {
   await db.run(
     `UPDATE tasks SET name = ?, description = ?, priority = ?, status = ?, completed_at = ? WHERE user_id = ? AND id = ?`,
-    [name, description, priority, status, completed_at, req.session.userId, id],
+    [name, description, priority, status, completed_at, user_id, id],
   );
 }
 
-export async function deleteTask(id) {
-  await db.run(`DELETE FROM tasks WHERE user_id = ? AND id = ?`, [
-    req.session.userId,
-    id,
-  ]);
+export async function deleteTask(id, user_id) {
+  await db.run(`DELETE FROM tasks WHERE user_id = ? AND id = ?`, [user_id, id]);
 }
 
 export async function insertUser(first_name, last_name, email, password) {
