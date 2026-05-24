@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useParams, useLocation } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export default function CreateTask() {
   const [task, setTask] = useState({
@@ -22,10 +23,12 @@ export default function CreateTask() {
     priority: "",
     status: "",
     completed_at: "",
+    user_id: "",
   });
   const navigate = useNavigate();
   const { id } = useParams();
   const location = useLocation();
+  const { user } = useAuth();
 
   const isEditMode = location.pathname.includes("/edit");
   const isViewMode = id && !isEditMode;
@@ -34,7 +37,9 @@ export default function CreateTask() {
     async function fetchTask() {
       if (!id) return;
       try {
-        const response = await fetch(`http://localhost:3000/api/tasks/${id}`);
+        const response = await fetch(`http://localhost:3000/api/tasks/${id}`, {
+          credentials: "include",
+        });
         const taskData = await response.json();
         setTask({
           name: taskData.name || "",
@@ -42,6 +47,7 @@ export default function CreateTask() {
           priority: taskData.priority || "",
           status: taskData.status || "",
           completed_at: taskData.completed_at || "",
+          user_id: taskData.user_id || "",
         });
       } catch (error) {
         console.error("Error fetching task:", error);
@@ -52,36 +58,45 @@ export default function CreateTask() {
   }, [id]);
 
   async function handleSubmit(e) {
-    e.preventDefault();
+    try {
+      e.preventDefault();
 
-    const taskData = {
-      name: task.name,
-      description: task.description,
-      priority: task.priority,
-      status: task.status,
-      completed_at: task.completed_at,
-    };
+      const taskData = {
+        name: task.name,
+        description: task.description,
+        priority: task.priority,
+        status: task.status,
+        completed_at: task.completed_at,
+        user_id: user.id,
+      };
 
-    const url = id
-      ? `http://localhost:3000/api/tasks/${id}`
-      : "http://localhost:3000/api/tasks";
-    const method = id ? "PUT" : "POST";
+      const url = id
+        ? `http://localhost:3000/api/tasks/${id}`
+        : "http://localhost:3000/api/tasks";
+      const method = id ? "PUT" : "POST";
 
-    await fetch(url, {
-      method: method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(taskData),
-    });
-    setTask({
-      name: "",
-      description: "",
-      priority: "",
-      status: "",
-      completed_at: "",
-    });
-    navigate("/tasks");
+      const response = await fetch(url, {
+        method: method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(taskData),
+      });
+      const data = await response.json();
+      console.log("Task created/updated: ", data);
+      setTask({
+        name: "",
+        description: "",
+        priority: "",
+        status: "",
+        completed_at: "",
+        user_id: user.id,
+      });
+      navigate("/tasks");
+    } catch (err) {
+      console.log("Error creating/updating task: ", err);
+    }
   }
 
   return (
