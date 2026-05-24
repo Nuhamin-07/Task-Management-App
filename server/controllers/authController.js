@@ -71,7 +71,16 @@ export async function loginUser(req, res) {
     }
 
     req.session.userId = user.id;
-    res.status(200).json({ message: "User logged in successfully" });
+    res
+      .status(200)
+      .json({
+        message: "User logged in successfully",
+        user: {
+          id: user.id,
+          name: user.first_name + " " + user.last_name,
+          email: user.email,
+        },
+      });
   } catch (error) {
     console.error("Error logging in user:", error);
     res.status(500).json({ error: "Internal server error" });

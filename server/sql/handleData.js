@@ -65,13 +65,19 @@ export async function insertTask(
 }
 
 export async function getAllTasks() {
-  const tasks = await db.all(`SELECT * FROM tasks ORDER BY created_at DESC`);
+  const tasks = await db.all(
+    `SELECT * FROM tasks WHERE user_id = ? ORDER BY created_at DESC`,
+    [req.session.userId],
+  );
   console.log(tasks);
   return tasks;
 }
 
 export async function getTaskById(id) {
-  const task = await db.get(`SELECT * FROM tasks WHERE id = ?`, [id]);
+  const task = await db.get(
+    `SELECT * FROM tasks WHERE user_id = ? AND id = ?`,
+    [req.session.userId, id],
+  );
   return task;
 }
 
@@ -84,13 +90,16 @@ export async function updateTask(
   completed_at,
 ) {
   await db.run(
-    `UPDATE tasks SET name = ?, description = ?, priority = ?, status = ?, completed_at = ? WHERE id = ?`,
-    [name, description, priority, status, completed_at, id],
+    `UPDATE tasks SET name = ?, description = ?, priority = ?, status = ?, completed_at = ? WHERE user_id = ? AND id = ?`,
+    [name, description, priority, status, completed_at, req.session.userId, id],
   );
 }
 
 export async function deleteTask(id) {
-  await db.run(`DELETE FROM tasks WHERE id = ?`, [id]);
+  await db.run(`DELETE FROM tasks WHERE user_id = ? AND id = ?`, [
+    req.session.userId,
+    id,
+  ]);
 }
 
 export async function insertUser(first_name, last_name, email, password) {
