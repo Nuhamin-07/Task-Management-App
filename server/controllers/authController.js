@@ -44,7 +44,14 @@ export async function registerUser(req, res) {
 
     req.session.userId = newUser.lastID;
 
-    res.status(201).json({ message: "User registered successfully" });
+    res.status(201).json({
+      message: "User registered successfully",
+      user: {
+        id: newUser.lastID,
+        name: first_name + " " + last_name,
+        email: email,
+      },
+    });
   } catch (error) {
     console.error("Error registering user:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -71,16 +78,14 @@ export async function loginUser(req, res) {
     }
 
     req.session.userId = user.id;
-    res
-      .status(200)
-      .json({
-        message: "User logged in successfully",
-        user: {
-          id: user.id,
-          name: user.first_name + " " + user.last_name,
-          email: user.email,
-        },
-      });
+    res.status(200).json({
+      message: "User logged in successfully",
+      user: {
+        id: user.id,
+        name: user.first_name + " " + user.last_name,
+        email: user.email,
+      },
+    });
   } catch (error) {
     console.error("Error logging in user:", error);
     res.status(500).json({ error: "Internal server error" });
