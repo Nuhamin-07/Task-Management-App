@@ -3,15 +3,12 @@ import TaskList from "./pages/TaskList";
 import MainLayout from "./components/MainLayout";
 import CreateTask from "./pages/CreateTask";
 import Signup from "./pages/Signup";
+import Login from "./pages/Login";
 
 const router = createBrowserRouter([
   {
     element: <MainLayout />,
     children: [
-      {
-        path: "/",
-        element: <TaskList />,
-      },
       {
         path: "/tasks",
         element: <TaskList />,
@@ -28,11 +25,19 @@ const router = createBrowserRouter([
         path: "/task/:id/edit",
         element: <CreateTask />,
       },
-      {
-        path: "/signup",
-        element: <Signup />,
-      },
     ],
+  },
+  {
+    path: "/signup",
+    element: <Signup />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/",
+    element: <Login />,
   },
 ]);
 

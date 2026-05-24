@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Signup() {
   const [newUser, setNewUser] = useState({
@@ -10,21 +11,24 @@ export default function Signup() {
     password: "",
   });
 
-  function handleRegister(e) {
+  async function handleRegister(e) {
     try {
       e.preventDefault();
-      fetch("http://localhost:3000/api/auth/signup", {
+      const response = await fetch("http://localhost:3000/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newUser),
       });
+      const data = await response.json();
+      console.log("User registered: ", data);
     } catch (err) {
       console.log("Error registering a new user: ", err);
     }
   }
   console.log(newUser);
   return (
-    <div>
+    <div className="signup-form-container">
+      <h2 className="text-center mt-10">Signup</h2>
       <form
         className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md signup-form"
         onSubmit={handleRegister}
@@ -102,6 +106,12 @@ export default function Signup() {
           />
         </div>
         <Button type="submit">Signup</Button>
+        <p className="text-center">
+          Already have an account?{" "}
+          <Link className="link-text" to="/login">
+            Login
+          </Link>
+        </p>
       </form>
     </div>
   );
