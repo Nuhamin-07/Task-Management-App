@@ -35,22 +35,20 @@ export async function registerUser(req, res) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = await insertUser(
+    const result = await insertUser(
       first_name,
       last_name,
       cleanEmail,
       hashedPassword,
     );
 
-    req.session.userId = newUser.lastID;
+    req.session.userId = result.lastID;
+
+    const newUser = await getCurrentUserById(result.lastID);
 
     res.status(201).json({
       message: "User registered successfully",
-      user: {
-        id: newUser.lastID,
-        name: first_name + " " + last_name,
-        email: email,
-      },
+      user: newUser,
     });
   } catch (error) {
     console.error("Error registering user:", error);
@@ -80,11 +78,7 @@ export async function loginUser(req, res) {
     req.session.userId = user.id;
     res.status(200).json({
       message: "User logged in successfully",
-      user: {
-        id: user.id,
-        name: user.first_name + " " + user.last_name,
-        email: user.email,
-      },
+      user: user,
     });
   } catch (error) {
     console.error("Error logging in user:", error);
