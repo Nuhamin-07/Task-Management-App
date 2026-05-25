@@ -5,8 +5,13 @@ import CreateTask from "./pages/CreateTask";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
+import HomeRedirect from "./components/HomeRedirect";
 
 const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <HomeRedirect />,
+  },
   {
     element: (
       <ProtectedRoute>
@@ -38,10 +43,6 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/",
     element: <Login />,
   },
 ]);

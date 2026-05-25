@@ -15,6 +15,7 @@ import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useParams, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { toast } from "sonner";
 
 export default function CreateTask() {
   const [task, setTask] = useState({
@@ -25,6 +26,7 @@ export default function CreateTask() {
     completed_at: "",
     user_id: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
   const location = useLocation();
@@ -50,7 +52,7 @@ export default function CreateTask() {
           user_id: taskData.user_id || "",
         });
       } catch (error) {
-        console.error("Error fetching task:", error);
+        toast.error(`Error fetching task: ${error.message}`);
       }
     }
 
@@ -60,6 +62,8 @@ export default function CreateTask() {
   async function handleSubmit(e) {
     try {
       e.preventDefault();
+
+      setIsSubmitting(true);
 
       const taskData = {
         name: task.name,
@@ -84,7 +88,12 @@ export default function CreateTask() {
         body: JSON.stringify(taskData),
       });
       const data = await response.json();
-      console.log("Task created/updated: ", data);
+      const action = id ? "updated" : "created";
+      if (response.ok) {
+        toast.success(`Task ${action} successfully`);
+      } else {
+        toast.error(data.error || `Error ${action} task`);
+      }
       setTask({
         name: "",
         description: "",
@@ -95,7 +104,9 @@ export default function CreateTask() {
       });
       navigate("/tasks");
     } catch (err) {
-      console.log("Error creating/updating task: ", err);
+      toast.error(`Error creating/updating task: ${err.message}`);
+    } finally {
+      setIsSubmitting(false);
     }
   }
   return (
@@ -110,7 +121,11 @@ export default function CreateTask() {
             ? "Edit Task"
             : "Create New Task"}
       </h2>
-      <form className="task-form" onSubmit={handleSubmit}>
+      <form
+        className="task-form"
+        onSubmit={handleSubmit}
+        disabled={isViewMode || isSubmitting}
+      >
         <label htmlFor="task-name">Task Name</label>
         <Input
           type="text"
@@ -189,7 +204,15 @@ export default function CreateTask() {
           disabled={isViewMode}
         />
         {!isViewMode && (
-          <Button type="submit">{id ? "Update Task" : "Create Task"}</Button>
+          <Button disabled={isSubmitting} type="submit">
+            {isSubmitting
+              ? id
+                ? "Updating..."
+                : "Saving..."
+              : id
+                ? "Update Task"
+                : "Create Task"}
+          </Button>
         )}
       </form>
     </div>

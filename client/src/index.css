@@ -414,6 +414,54 @@ Button {
   display: flex;
 }
 
+.show-password-btn {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  margin-top: 8px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.password-input {
+  padding-right: 40px;
+}
+
+.password-input-container {
+  position: relative;
+}
+
+.user-info {
+  text-align: right;
+  margin-right: 40px;
+}
+
+.user-info > span,
+.user-info > button {
+  font-weight: 500;
+  color: #fff;
+}
+
+.logout-btn {
+  display: flex;
+  justify-content: end;
+  margin-left: auto;
+  padding: 5px;
+}
+
+.logout-btn:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+.state-text {
+  text-align: center;
+  font-size: 24px;
+}
+
 @media (max-width: 768px) {
   .task-container {
     flex-direction: column;
