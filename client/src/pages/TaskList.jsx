@@ -15,24 +15,33 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useAuth } from "../context/AuthContext";
+import { toast } from "sonner";
 
 export default function TaskList() {
   const [tasks, setTasks] = useState([]);
   const [searchTask, setSearchTask] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const { user } = useAuth();
 
   useEffect(() => {
     async function fetchTasks() {
       if (!user) return;
-      const response = await fetch("http://localhost:3000/api/tasks", {
-        credentials: "include",
-      });
-      const tasks = await response.json();
-      setTasks(tasks);
+      setIsLoading(true);
+      try {
+        const response = await fetch("http://localhost:3000/api/tasks", {
+          credentials: "include",
+        });
+        const tasks = await response.json();
+        setTasks(tasks);
+      } catch (err) {
+        toast.error(`Error fetching tasks: ${err.message}`);
+      } finally {
+        setIsLoading(false);
+      }
     }
     fetchTasks();
-  }, []);
+  }, [user]);
 
   async function handleDelete(taskId) {
     try {
@@ -44,21 +53,18 @@ export default function TaskList() {
         },
       );
       const data = await response.json();
-      console.log("Task deleted: ", data);
+      toast.success(data.message || "Task deleted successfully");
       setTasks(tasks.filter((task) => task.id !== taskId));
     } catch (err) {
-      console.log("Error deleting task: ", err);
+      toast.error(`Error deleting task: ${err.message}`);
     }
   }
 
-  const filteredTasks =
-    tasks && searchTask
-      ? tasks.filter((task) =>
-          task.name.toLowerCase().includes(searchTask.toLowerCase()),
-        )
-      : tasks
-        ? tasks
-        : null;
+  const filteredTasks = searchTask
+    ? tasks.filter((task) =>
+        task.name.toLowerCase().includes(searchTask.toLowerCase()),
+      )
+    : tasks;
 
   return (
     <div className="space-y-4 container list-container">
@@ -77,7 +83,11 @@ export default function TaskList() {
         </Button>
       </div>
 
-      {filteredTasks ? (
+      {isLoading ? (
+        <p className="text-muted-foreground state-text">Loading tasks...</p>
+      ) : filteredTasks.length === 0 ? (
+        <p className="text-muted-foreground state-text">No tasks found</p>
+      ) : (
         filteredTasks.map((task) => (
           <div key={task.id} className="border rounded-lg p-4 task-container">
             <div>
@@ -132,8 +142,6 @@ export default function TaskList() {
             </div>
           </div>
         ))
-      ) : (
-        <h3>No tasks found</h3>
       )}
     </div>
   );

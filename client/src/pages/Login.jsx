@@ -4,12 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { toast } from "sonner";
 
 export default function Login() {
   const [userData, setUserData] = useState({
     email: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const { setUser } = useAuth();
   const navigate = useNavigate();
@@ -27,11 +30,17 @@ export default function Login() {
       if (response.ok) {
         setUser(data.user);
         navigate("/tasks");
-        console.log("User logged in: ", data);
+        toast.success("User logged in successfully");
+      } else {
+        toast.error(data.error || "Error logging in user");
       }
     } catch (err) {
-      console.log("Error logging in user: ", err);
+      toast.error(`Error logging in user: ${err.message}`);
     }
+  }
+
+  function togglePasswordVisibility() {
+    setShowPassword((prev) => !prev);
   }
 
   return (
@@ -50,18 +59,30 @@ export default function Login() {
             onChange={(e) =>
               setUserData({ ...userData, email: e.target.value })
             }
+            placeholder="john@example.com"
+            required
           />
         </div>
-        <div>
+        <div className="mb-4 password-input-container">
           <label>Password</label>
           <Input
-            type="password"
+            className="password-input"
+            type={showPassword ? "text" : "password"}
             value={userData.password}
             onChange={(e) =>
               setUserData({ ...userData, password: e.target.value })
             }
             minLength={6}
+            placeholder="******"
+            required
           />
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            className="show-password-btn"
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </button>
         </div>
         <Button type="submit">Login</Button>
         <p>

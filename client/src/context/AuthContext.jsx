@@ -9,7 +9,6 @@ export function AuthContextProvider({ children }) {
   useEffect(() => {
     async function fetchUser() {
       try {
-        if (!user) return;
         const response = await fetch("http://localhost:3000/api/auth/me", {
           credentials: "include",
         });
