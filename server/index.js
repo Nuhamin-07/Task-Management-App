@@ -8,7 +8,7 @@ import { authRouter } from "./routes/authRoute.js";
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://nuhamin-task-management.netlify.app/",
     credentials: true,
   }),
 );
@@ -17,15 +17,17 @@ const PORT = 3000;
 
 app.use(express.json());
 
+app.set("trust proxy", 1);
+
 app.use(
   session({
-    secret: "your_secret_key",
+    secret: "secret_key",
     resave: false,
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
     },
   }),
 );
