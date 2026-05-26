@@ -9,10 +9,13 @@ export default function Header() {
   const navigate = useNavigate();
 
   async function handleLogout() {
-    await fetch("http://localhost:3000/api/auth/logout", {
-      method: "POST",
-      credentials: "include",
-    });
+    await fetch(
+      "https://task-management-app-4-ina7.onrender.com/api/auth/logout",
+      {
+        method: "POST",
+        credentials: "include",
+      },
+    );
     setUser(null);
     navigate("/login");
   }

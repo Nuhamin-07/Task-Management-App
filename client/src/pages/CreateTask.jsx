@@ -39,9 +39,12 @@ export default function CreateTask() {
     async function fetchTask() {
       if (!id) return;
       try {
-        const response = await fetch(`http://localhost:3000/api/tasks/${id}`, {
-          credentials: "include",
-        });
+        const response = await fetch(
+          `https://task-management-app-4-ina7.onrender.com/api/tasks/${id}`,
+          {
+            credentials: "include",
+          },
+        );
         const taskData = await response.json();
         setTask({
           name: taskData.name || "",
@@ -75,8 +78,8 @@ export default function CreateTask() {
       };
 
       const url = id
-        ? `http://localhost:3000/api/tasks/${id}`
-        : "http://localhost:3000/api/tasks";
+        ? `https://task-management-app-4-ina7.onrender.com/api/tasks/${id}`
+        : "https://task-management-app-4-ina7.onrender.com/api/tasks";
       const method = id ? "PUT" : "POST";
 
       const response = await fetch(url, {
