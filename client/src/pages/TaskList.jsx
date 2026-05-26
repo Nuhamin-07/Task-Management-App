@@ -29,9 +29,12 @@ export default function TaskList() {
       if (!user) return;
       setIsLoading(true);
       try {
-        const response = await fetch("http://localhost:3000/api/tasks", {
-          credentials: "include",
-        });
+        const response = await fetch(
+          "https://task-management-app-4-ina7.onrender.com/api/tasks",
+          {
+            credentials: "include",
+          },
+        );
         const tasks = await response.json();
         setTasks(tasks);
       } catch (err) {
@@ -46,7 +49,7 @@ export default function TaskList() {
   async function handleDelete(taskId) {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/tasks/${taskId}`,
+        `https://task-management-app-4-ina7.onrender.com/api/tasks/${taskId}`,
         {
           method: "DELETE",
           credentials: "include",

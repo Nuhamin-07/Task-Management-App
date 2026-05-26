@@ -9,9 +9,12 @@ export function AuthContextProvider({ children }) {
   useEffect(() => {
     async function fetchUser() {
       try {
-        const response = await fetch("http://localhost:3000/api/auth/me", {
-          credentials: "include",
-        });
+        const response = await fetch(
+          "https://task-management-app-4-ina7.onrender.com/api/auth/me",
+          {
+            credentials: "include",
+          },
+        );
         if (response.ok) {
           const data = await response.json();
           setUser(data.user);

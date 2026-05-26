@@ -20,12 +20,15 @@ export default function Login() {
   async function handleSubmit(e) {
     try {
       e.preventDefault();
-      const response = await fetch("http://localhost:3000/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(userData),
-      });
+      const response = await fetch(
+        "https://task-management-app-4-ina7.onrender.com/api/auth/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(userData),
+        },
+      );
       const data = await response.json();
       if (response.ok) {
         setUser(data.user);

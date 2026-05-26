@@ -27,12 +27,15 @@ export default function Signup() {
         toast.error("Passwords do not match");
         return;
       }
-      const response = await fetch("http://localhost:3000/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(newUser),
-      });
+      const response = await fetch(
+        "https://task-management-app-4-ina7.onrender.com/api/auth/signup",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(newUser),
+        },
+      );
       const data = await response.json();
       if (!response.ok) {
         toast.error(data.error || "Error registering a new user");
