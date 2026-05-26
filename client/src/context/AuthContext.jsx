@@ -9,6 +9,7 @@ export function AuthContextProvider({ children }) {
   useEffect(() => {
     async function fetchUser() {
       try {
+        setLoading(true);
         const response = await fetch(
           "https://task-management-app-4-ina7.onrender.com/api/auth/me",
           {
