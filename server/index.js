@@ -8,7 +8,7 @@ import { authRouter } from "./routes/authRoute.js";
 const app = express();
 app.use(
   cors({
-    origin: "https://nuhamin-task-management.netlify.app/",
+    origin: "https://nuhamin-task-management.netlify.app",
     credentials: true,
   }),
 );
