@@ -1,4 +1,5 @@
 import { createContext, useState, useContext, useEffect } from "react";
+import { toast } from "sonner";
 
 const AuthContext = createContext();
 
@@ -9,19 +10,20 @@ export function AuthContextProvider({ children }) {
   useEffect(() => {
     async function fetchUser() {
       try {
-        setLoading(true);
         const response = await fetch(
           "https://task-management-app-4-ina7.onrender.com/api/auth/me",
           {
             credentials: "include",
           },
         );
-        if (response.ok) {
-          const data = await response.json();
-          setUser(data.user);
+        if (!response.ok) {
+          setUser(null);
+          return;
         }
+        const data = await response.json();
+        setUser(data.user);
       } catch (err) {
-        console.error("Error fetching user:", err);
+        toast.error(`Error fetching user: ${err.message}`);
       } finally {
         setLoading(false);
       }
