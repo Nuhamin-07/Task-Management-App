@@ -1,0 +1,10 @@
+# Dependencies and build folders
+**/node_modules/
+**/dist/
+**/build/
+**/.next/
+
+# Local databases and environment files
+database.db
+*.db
+.env
