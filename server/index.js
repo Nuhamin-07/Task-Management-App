@@ -6,9 +6,21 @@ import { taskRouter } from "./routes/taskRoute.js";
 import { authRouter } from "./routes/authRoute.js";
 
 const app = express();
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://nuhamin-task-management.netlify.app",
+];
+
 app.use(
   cors({
-    origin: "https://nuhamin-task-management.netlify.app",
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   }),
 );
@@ -27,7 +39,7 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: true,
-      sameSite: "none",
+      sameSite: isProduction ? "none" : "lax",
     },
   }),
 );
