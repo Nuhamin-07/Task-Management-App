@@ -9,7 +9,7 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://daily-task-management-1.netlify.app",
+  "https://nuhamin-task-management.netlify.app",
 ];
 
 app.use(
