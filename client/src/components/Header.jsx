@@ -76,8 +76,8 @@ export default function Header() {
               <Link
                 to="/tasks"
                 className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${location.pathname === "/tasks"
-                    ? "bg-secondary text-foreground font-semibold"
-                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+                  ? "bg-secondary text-foreground font-semibold"
+                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
                   }`}
               >
                 <LayoutDashboard className="h-4 w-4" />
@@ -147,8 +147,8 @@ export default function Header() {
                   onClick={() => navigate("/task/new")}
                   className="sm:hidden flex items-center gap-2 cursor-pointer"
                 >
-                  {/* <Plus className="h-4 w-4 text-muted-foreground" />
-                  <span>Create New Task</span> */}
+                  <Plus className="h-4 w-4 text-muted-foreground" />
+                  <span>Create New Task</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={handleLogout}

@@ -232,13 +232,13 @@ export default function TaskList() {
             Manage, organize, and track your daily team assignments.
           </p>
         </div>
-        <Button
+        {/* <Button
           onClick={() => navigate("/task/new")}
           className="inline-flex items-center gap-2 shadow-xs shrink-0 font-medium"
         >
           <Plus className="h-4 w-4" />
           <span>Create New Task</span>
-        </Button>
+        </Button> */}
       </div>
 
       {/* Overview Metric Cards */}
