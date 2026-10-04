@@ -75,11 +75,10 @@ export default function Header() {
             <nav className="hidden md:flex items-center gap-1 ml-4 border-l border-border pl-6">
               <Link
                 to="/tasks"
-                className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
-                  location.pathname === "/tasks"
+                className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${location.pathname === "/tasks"
                     ? "bg-secondary text-foreground font-semibold"
                     : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
-                }`}
+                  }`}
               >
                 <LayoutDashboard className="h-4 w-4" />
                 Dashboard
@@ -97,8 +96,8 @@ export default function Header() {
               onClick={() => navigate("/task/new")}
               className="hidden sm:inline-flex items-center gap-1.5 shadow-xs font-medium"
             >
-              <Plus className="h-4 w-4" />
-              <span>New Task</span>
+              {/* <Plus className="h-4 w-4" /> */}
+              <span>Create New Task</span>
             </Button>
           )}
 
@@ -148,8 +147,8 @@ export default function Header() {
                   onClick={() => navigate("/task/new")}
                   className="sm:hidden flex items-center gap-2 cursor-pointer"
                 >
-                  <Plus className="h-4 w-4 text-muted-foreground" />
-                  <span>Create New Task</span>
+                  {/* <Plus className="h-4 w-4 text-muted-foreground" />
+                  <span>Create New Task</span> */}
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={handleLogout}
